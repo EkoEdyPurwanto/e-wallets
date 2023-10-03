@@ -22,3 +22,9 @@ go.work
 
 # Jetbrains
 .idea
+
+# myNote
+note.txt
+
+# configuration
+app.env
