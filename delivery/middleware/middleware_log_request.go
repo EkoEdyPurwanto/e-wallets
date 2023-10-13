@@ -12,12 +12,15 @@ import (
 func LogRequest(log *logrus.Logger) echo.MiddlewareFunc {
 	cfg, err := config.NewConfig()
 	if err != nil {
-		panic(err)
+		log.Fatal("Error loading config:", err)
 	}
+
+	// Membuka atau membuat file log jika tidak ada
 	file, err := os.OpenFile(cfg.FilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
+
 	log.SetOutput(file)
 
 	return func(next echo.HandlerFunc) echo.HandlerFunc {

@@ -1,6 +1,10 @@
 package manager
 
+import "EEP/e-wallets/repository"
+
 type RepositoryManager interface {
+	UsersAccountRepository() repository.UsersAccountRepository
+	WalletsRepository() repository.WalletsRepository
 }
 
 type repositoryManager struct {
@@ -13,4 +17,11 @@ func NewRepoManager(infraManager InfraManager) RepositoryManager {
 	}
 }
 
-//implement interface here
+// implement interface here
+func (r *repositoryManager) UsersAccountRepository() repository.UsersAccountRepository {
+	return repository.NewUsersAccountRepository(r.infraManager.Conn())
+}
+
+func (r *repositoryManager) WalletsRepository() repository.WalletsRepository {
+	return repository.NewWalletsRepository(r.infraManager.Conn())
+}
