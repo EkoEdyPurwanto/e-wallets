@@ -27,7 +27,7 @@ func (s *Server) Run() {
 }
 
 func (s *Server) initMiddlewares() {
-	s.engine.Use(middleware.LogRequest(s.log))
+	//s.engine.Use(middleware.LogRequest(s.log))
 	s.engine.Use(middleware.RateLimiter())
 }
 
