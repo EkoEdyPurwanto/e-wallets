@@ -26,7 +26,7 @@ func NewUsersAccountController(usersAccountUC usecase.UsersAccountUseCase, walle
 func (ua *UserAccountController) AuthRoute() {
 	rg := ua.engine.Group("/api/v1")
 
-	rg.POST("auth/register", ua.registerHandler)
+	rg.POST("/auth/register", ua.registerHandler)
 
 	//ua.engine.HTTPErrorHandler = exception.ErrorHandling
 }
