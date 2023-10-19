@@ -2,11 +2,13 @@ package delivery
 
 import (
 	"EEP/e-wallets/config"
+	"EEP/e-wallets/delivery/controller"
 	"EEP/e-wallets/delivery/middleware"
 	"EEP/e-wallets/manager"
 	"fmt"
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 type Server struct {
@@ -27,16 +29,11 @@ func (s *Server) Run() {
 
 func (s *Server) initMiddlewares() {
 	s.engine.Use(middleware.LogRequest(s.log))
+	s.engine.Use(middleware.RateLimiter())
 }
 
 func (s *Server) initControllers() {
-	//rg := s.engine.Group("/api/v1")
-	//api.NewUomController(s.ucManager.UomUseCase(), rg).Route()
-	//api.NewProductController(s.ucManager.ProductUseCase(), rg).Route()
-	//api.NewEmpolyeeController(s.ucManager.EmployeeUseCase(), rg).Route()
-	//api.NewCustomerController(s.ucManager.CustomerUseCase(), rg).Route()
-	//api.NewBillController(s.ucManager.BillUseCase(), rg).Route()
-	//api.NewAuthController(s.ucManager.UserUseCase(), s.ucManager.AuthUseCase(), rg).Route()
+	controller.NewUsersAccountController(s.ucManager.UsersAccountUC(), s.ucManager.WalletsUC(), s.engine).AuthRoute()
 }
 
 func NewServer() *Server {
@@ -48,17 +45,21 @@ func NewServer() *Server {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	// Instance Repo
 	rm := manager.NewRepoManager(infraManager)
+
+	// Instance UC
 	ucm := manager.NewUseCaseManager(rm)
 
-	host := fmt.Sprintf("%s:%s", cfg.ApiHost, cfg.ApiPort)
+	hostAndPort := fmt.Sprintf("%s:%s", viper.GetString("APP_API_HOST"), viper.GetString("APP_API_PORT"))
 	log := logrus.New()
 
 	engine := echo.New()
 	return &Server{
 		ucManager: ucm,
 		engine:    engine,
-		host:      host,
+		host:      hostAndPort,
 		log:       log,
 	}
 }

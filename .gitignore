@@ -28,3 +28,9 @@ note.txt
 
 # configuration
 app.env
+
+# DB
+*.sql
+
+# Log file
+logger.log
