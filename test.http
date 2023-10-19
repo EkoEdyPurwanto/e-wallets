@@ -1,0 +1,13 @@
+POST http://localhost:8888/api/v1/auth/register
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Identifier": {
+    "Email": "test8@example.com",
+    "PhoneNumber": "12345678908"
+  },
+  "UserName": "testuser8",
+  "Password": "password123",
+  "PasswordConfirm": "password123"
+}

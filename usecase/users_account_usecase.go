@@ -43,7 +43,7 @@ func (u *usersAccountUseCase) Register(payload req.RegisterRequest) error {
 		Email:         payload.Identifier.Email,
 		PhoneNumber:   payload.Identifier.PhoneNumber,
 		AccountStatus: model.Active,
-		CreatedAt:     time.Time{},
+		CreatedAt:     time.Now(),
 		UpdatedAt:     time.Time{},
 	}
 
