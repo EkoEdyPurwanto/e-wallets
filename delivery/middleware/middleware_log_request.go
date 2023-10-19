@@ -1,23 +1,18 @@
 package middleware
 
 import (
-	"EEP/e-wallets/config"
 	"EEP/e-wallets/model/dto/req"
 	"github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 	"os"
 	"time"
 )
 
 func LogRequest(log *logrus.Logger) echo.MiddlewareFunc {
-	cfg, err := config.NewConfig()
-	if err != nil {
-		//log.Fatal("Error loading config:", err)
-		panic(err)
-	}
 
 	// Membuka atau membuat file log jika tidak ada
-	file, err := os.OpenFile(cfg.FilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	file, err := os.OpenFile(viper.GetString("APP_FILE_PATH"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		//log.Fatal(err)
 		panic(err)

@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
+	"github.com/spf13/viper"
 )
 
 type InfraManager interface {
@@ -34,14 +35,15 @@ func (i *infraManager) Conn() *sql.DB {
 
 func (i *infraManager) initDb() error {
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		i.cfg.DbConfig.Host,
-		i.cfg.DbConfig.Port,
-		i.cfg.DbConfig.User,
-		i.cfg.DbConfig.Password,
-		i.cfg.DbConfig.Name,
+		viper.GetString("APP_DB_HOST"),
+		viper.GetString("APP_DB_PORT"),
+		viper.GetString("APP_DB_USER"),
+		viper.GetString("APP_DB_PASSWORD"),
+		viper.GetString("APP_DB_NAME"),
 	)
-	// this problem
-	db, err := sql.Open( /*i.cfg.DbConfig.Driver */ "postgres", dsn)
+	fmt.Println(dsn)
+
+	db, err := sql.Open(viper.GetString("APP_DB_DRIVER"), dsn)
 	if err != nil {
 		return err
 	}
